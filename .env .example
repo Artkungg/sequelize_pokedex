@@ -1,0 +1,13 @@
+# port when start app
+PORT=
+
+# database config
+DB_HOST=
+DB_TYPE=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_PORT=
+
+# req.headers.hostname ex http://localhost:3000
+HOST=
