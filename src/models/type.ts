@@ -1,17 +1,12 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import { pokedexType } from "./type";
 
-export const Pokedex = sequelize.define("Pokedex",{
-    name_en:{
-        type: DataTypes.STRING,
+export const pokedexType = sequelize.define("Pokedex_Type",{
+    PokedexId:{
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    name_jp:{
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    file_path:{
+    type_name:{
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -24,5 +19,3 @@ export const Pokedex = sequelize.define("Pokedex",{
         allowNull: false
     }
 })
-
-Pokedex.hasMany(pokedexType)

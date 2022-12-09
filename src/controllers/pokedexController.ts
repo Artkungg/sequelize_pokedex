@@ -1,11 +1,14 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { url } from "inspector";
-import { where } from "sequelize";
 import { Pokedex } from "../models/pokedex";
+import { pokedexType } from "../models/type"
 require('dotenv').config()
 
 export const getAllPokedexs:RequestHandler = async(req:Request, res:Response) => {
-    const pokedexs = await Pokedex.findAll()
+    const pokedexs = await Pokedex.findAll({
+        include:{
+            model: pokedexType
+        }
+    })
     return res.status(200).json({pokedexs})
 }
 
@@ -17,11 +20,12 @@ export const createPokedex = async(req:Request, res:Response, next: NextFunction
     let pokedex = {
         name_en: req.body.name_en,
         name_jp: req.body.name_jp,
-        type: req.body.type,
-        base64_image: req.body.base64Image,
-        file_path: file_path
+        file_path: file_path,
+        Pokedex_Types: JSON.parse(req.body.type)
     }
-    await Pokedex.create(pokedex)
+    await Pokedex.create(pokedex,{
+        include: [ pokedexType ]
+    })
     return res.status(200).json({message: "Create Pokedex successfully"})
 }
 
@@ -39,6 +43,6 @@ export const deletePokedex = async(req:Request, res:Response) => {
 
 export const getPokedexById = async(req:Request, res:Response) => {
     const {id} = req.params
-    let pokedex:Pokedex|null = await Pokedex.findByPk(id)
+    let pokedex = await Pokedex.findByPk(id)
     return res.status(200).json({pokedex}) 
 }
